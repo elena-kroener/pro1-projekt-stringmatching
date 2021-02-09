@@ -8,10 +8,15 @@ class StringMatching:
     def __init__(self, string, text, method="kmp"):
         self.string = string
         self.text = text
-        self.position = int()
+        self.position = list()
 
     def naive(self):
-        pass
+        n = len(self.text)
+        m = len(self.string)
+        for s in range(n):
+            if list(self.string) == list(self.text)[s:s+m]:
+                self.position.append(s)
+        return ', '.join(map(str, self.position))
 
     def _prefix(self):
         pass
@@ -21,7 +26,8 @@ class StringMatching:
 
 
 def main():
-    pass
+    match = StringMatching("kleid", "Brautkleid bleibt Brautkleid und Blaukraut bleibt Blaukraut.")
+    print(match.naive())
 
 
 if __name__ == "__main__":
