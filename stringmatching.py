@@ -3,7 +3,20 @@
 
 
 class StringMatching:
-    """Find position of a string in another sting, text or multiple texts"""
+    """
+    Find position of a string in another string
+
+    Attributes
+    ----------
+    string: str
+        String that user searches for
+    text: str
+        String that 'string' is searched in
+    method: str, default="kmp"
+        Determine search method, either "kmp" or "naive"
+    case: str, optional
+        Turn off case-sensitivity if set to "ignore"
+    """
 
     methods = ["kmp", "naive"]
 
@@ -33,43 +46,63 @@ class StringMatching:
         return ', '.join(map(str, self.position))
 
     def _prefix(self):
+        """
+        Compare string with itself
+
+        Returns
+        -------
+        pi : dict
+            Index of string as key with number of repeated characters from
+            beginning as value.
+        """
         m = len(self.string)
-        pi = {0: 1}
+        pi = {0: 0}
         k = 0
         for q in range(1, m):
-            while k > 0 and self.string[k+1] != self.string[q]:
+            while k > 0 and self.string[k] != self.string[q]:
                 k = pi[k]
-            if self.string[k+1] == self.string[q]:
+            if self.string[k] == self.string[q]:
                 k += 1
             pi[q] = k
-        print(pi)
         return pi
 
     def _kmp_matcher(self):
+        """
+        Find position of search term in a larger string
+
+        Returns
+        -------
+        list
+            contains all starting positions of search term in larger string.
+        """
         n = len(self.text)
         m = len(self.string)
         pi = self._prefix()
         q = 0
-        for i in range(n-1):
-            while q > 0 and self.string[q+1] != self.text[i]:
+        for i in range(n):
+            while q > 0 and self.string[q] != self.text[i]:
                 q = pi[q]
-            if self.string[q+i] == self.text[i]:
+            if self.string[q] == self.text[i]:
                 q += 1
-            if q == m:
-                self.position.append(i-m)
+            if q == m-1:
+                self.position.append(i-m+2)
                 q = pi[q]
         return self.position
 
 
 def main():
-    naive_string = StringMatching("Braut", "Brautkleid bleibt Brautkleid und \
-                                  Blaukraut bleibt Blaukraut.", method="naive")
-    print(naive_string.matcher())
-    naive_case_ignore = StringMatching("braut", "Brautkleid bleibt Brautkleid\
-                                       und Blaukraut bleibt Blaukraut.",
-                                       method="naive", case="ignore")
-    print(naive_case_ignore.matcher())
-    kmp_string = StringMatching("ababaca", "abababababcabababca")  # string darf nicht unter 2?
+    # naive_string = StringMatching("Braut", "Brautkleid bleibt Brautkleid und \
+    #                               Blaukraut bleibt Blaukraut.", method="naive")
+    # print(naive_string.matcher())
+    # naive_case_ignore = StringMatching("braut", "Brautkleid bleibt Brautkleid\
+    #                                    und Blaukraut bleibt Blaukraut.",
+    #                                    method="naive", case="ignore")
+    # print(naive_case_ignore.matcher())
+
+    kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel")
+    print(kmp_string.matcher())
+    kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
+                                case="ignore")
     print(kmp_string.matcher())
 
 
