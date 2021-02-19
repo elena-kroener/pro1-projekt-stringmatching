@@ -40,7 +40,7 @@ class StringMatching:
     def _naive(self):
         n = len(self.text)
         m = len(self.string)
-        for s in range(n-m):
+        for s in range(n-m+1):
             if self.string == self.text[s:s+m]:
                 self.position.append(s)
         return ', '.join(map(str, self.position))
@@ -84,10 +84,11 @@ class StringMatching:
                 q = pi[q]
             if self.string[q] == self.text[i]:
                 q += 1
-            if q == m-1:
+            if q == m:
                 self.position.append(i-m+2)
+                print(pi, q)
                 q = pi[q]
-        return self.position
+        return ', '.join(map(str, self.position))
 
 
 def main():
@@ -95,8 +96,8 @@ def main():
     #                               Blaukraut bleibt Blaukraut.", method="naive")
     # print(naive_string.matcher())
     # naive_case_ignore = StringMatching("braut", "Brautkleid bleibt Brautkleid\
-    #                                    und Blaukraut bleibt Blaukraut.",
-    #                                    method="naive", case="ignore")
+    #                                     und Blaukraut bleibt Blaukraut.",
+    #                                     method="naive", case="ignore")
     # print(naive_case_ignore.matcher())
 
     kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel")
@@ -104,7 +105,10 @@ def main():
     kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
                                 case="ignore")
     print(kmp_string.matcher())
-
+    kmp_string = StringMatching("apfk", "Der Apfel fällt nicht weit vom Stamm.",
+                                case="ignore")
+    print(kmp_string.matcher())
+    
 
 if __name__ == "__main__":
     main()
