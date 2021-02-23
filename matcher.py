@@ -9,6 +9,21 @@ import stringmatching as sm
 
 
 def readfiles(t):
+    """
+    Determine type of variable text and turn into searchable list of string
+
+    Parameters
+    ----------
+    t : string, .txt-file or foulder
+        Text that will be transformed based on its type.
+
+    Returns
+    -------
+    texts : list of string or list of lists
+        List with text that will be searched in, either a string or multiple
+            sublists if it is a foulder with multiple .txt-files.
+
+    """
     texts = []
     if os.path.isfile(t):
         with open(t, "r", encoding="utf-8") as t:
@@ -37,21 +52,17 @@ def main():
                         help="Das Wort, nach dem gesucht werden soll")
     parser.add_argument("text", type=str, help="String, .txt-Dokument oder \
                         Ordner, in dem gesucht werden soll")
-
-
-    # if len(sys.argv) < 3 or sys.argv[1] != "suche":
-    #     parser.print_help()
-    #     sys.exit()
-
     args = parser.parse_args()
-    print(args)    
+    print(args)
 
     string = sys.argv[-2]
+    if not string:
+        print("Bitte einen Suchbegriff der Länge eins oder mehr eingeben.")
+        sys.exit()
     t = sys.argv[-1]
     texts = readfiles(t)
 
     for text in texts:
-        print(text)
         if args.ignore and args.naive:
             m = sm.StringMatching(string, text, case="ignore", method="naive")
             print("Ignoriere Groß- und Kleinschreibung, suche mit naivem Algorithmus")
@@ -64,11 +75,10 @@ def main():
         else:
             m = sm.StringMatching(string, text)
         position = m.matcher()
-        print(position)
-
-        # match = matching(string, text, case="i")
-        # print(match)
-        
+        if not position:
+            print("Der Suchbegriff konnte nicht gefunden werden.")
+        else:
+            print(position)
 
 
 if __name__ == "__main__":

@@ -73,7 +73,7 @@ class StringMatching:
         Returns
         -------
         list
-            contains all starting positions of search term in larger string.
+            Contains all starting positions of search term in larger string.
         """
         n = len(self.text)
         m = len(self.string)
@@ -85,9 +85,8 @@ class StringMatching:
             if self.string[q] == self.text[i]:
                 q += 1
             if q == m:
-                self.position.append(i-m+2)
-                print(pi, q)
-                q = pi[q]
+                self.position.append(i-m+1)
+                q = pi[q-1]
         return ', '.join(map(str, self.position))
 
 
@@ -102,10 +101,7 @@ def main():
 
     kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel")
     print(kmp_string.matcher())
-    kmp_string = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
-                                case="ignore")
-    print(kmp_string.matcher())
-    kmp_string = StringMatching("apfk", "Der Apfel fällt nicht weit vom Stamm.",
+    kmp_string_ignore = StringMatching("bar", "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
                                 case="ignore")
     print(kmp_string.matcher())
     
