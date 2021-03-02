@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 # Elena Kröner
+# Python 3.8
 
 import argparse
 import os
 import sys
 
-import stringmatching as sm
+import searchalgorithm as sm
 
 
 def readfiles(t):
     """
-    Determine type of variable text and turn into searchable list of string
+    Determine type of variable 'text' and turn into searchable list of string
 
     Parameters
     ----------
@@ -21,7 +22,7 @@ def readfiles(t):
     -------
     texts : list of string or list of lists
         List with text that will be searched in, either a string or multiple
-            sublists if it is a foulder with multiple .txt-files.
+            sublists if input is a foulder with multiple .txt-files.
 
     """
     texts = []
@@ -41,7 +42,7 @@ def readfiles(t):
     return texts
 
 
-def main():
+def define_argparser():
     parser = argparse.ArgumentParser(description="String Matcher")
     parser.add_argument("suche", help="Suche einen String in einem Text")
     parser.add_argument("-i", "--ignore", action="store_true",
@@ -53,8 +54,13 @@ def main():
     parser.add_argument("text", type=str, help="String, .txt-Dokument oder \
                         Ordner, in dem gesucht werden soll")
     args = parser.parse_args()
-    print(args)
+    return args
 
+
+def main():
+    args = define_argparser()
+
+    # check if string is not empty and transform it with readfiles-function
     string = sys.argv[-2]
     if not string:
         print("Bitte einen Suchbegriff der Länge eins oder mehr eingeben.")
@@ -63,6 +69,7 @@ def main():
     texts = readfiles(t)
 
     for text in texts:
+        # choose search algorithm accoring to input arguments
         if args.ignore and args.naive:
             m = sm.StringMatching(string, text, case="ignore", method="naive")
             print("Ignoriere Groß- und Kleinschreibung, suche mit naivem Algorithmus")
