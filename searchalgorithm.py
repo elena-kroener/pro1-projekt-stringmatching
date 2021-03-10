@@ -93,6 +93,9 @@ class StringMatching:
                 if self.string == t[s:s+m]:
                     found.append(s)
             self.position.append(found)
+
+        # if text contains multiple texts, return list as string per text,
+        # otherwise return string
         if len(self.position) > 1:
             return ', '.join(map(str, self.position))
         else:
@@ -144,6 +147,9 @@ class StringMatching:
                     found.append(i-m+1)
                     q = pi[q-1]
             self.position.append(found)
+
+        # if text contains multiple texts, return list as string per text,
+        # otherwise return string
         if len(self.position) > 1:
             return ', '.join(map(str, self.position))
         else:
@@ -153,27 +159,27 @@ class StringMatching:
 def main():
     naive_string = StringMatching("Braut", "Brautkleid bleibt Brautkleid und \
                                   Blaukraut bleibt Blaukraut.", method="naive")
-    print("Beispiel für naiv und case-sentitve:\n"
+    print("Beispiel für naiv und case-sensitive:\n"
         "Braut in Brautkleid bleibt Brautkleid und Blaukraut bleibt Blaukraut:",
           naive_string.matcher())
 
     naive_string_ignore = StringMatching("braut", "Brautkleid bleibt Brautkleid\
                                         und Blaukraut bleibt Blaukraut.",
                                         method="naive", case="ignore")
-    print("Beispiel für naiv und case-insentitve:\n"
+    print("Beispiel für naiv und case-insensitive:\n"
         "braut in Brautkleid bleibt Brautkleid und Blaukraut bleibt Blaukraut:",
           naive_string_ignore.matcher())
 
     kmp_string = StringMatching("bar",
                 "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel")
-    print("Beispiel für KMP und case-sentitve:\n"
+    print("Beispiel für KMP und case-sensitive:\n"
           "bar in RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
           kmp_string.matcher())
 
     kmp_string_ignore = StringMatching("bar",
                         "RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
                         case="ignore")
-    print("Beispiel für KMP und case-insentitve:\n"
+    print("Beispiel für KMP und case-insensitive:\n"
           "bar in RhabarberBarbaraBarbarenBartBarbierBierBarBärbel",
           kmp_string_ignore.matcher())
 
@@ -181,9 +187,25 @@ def main():
     print("Beispiel für default Suche in einer Datei:\n"
           "tree in example\\news.txt:", kmp_file.matcher())
 
-    kmp_folder = StringMatching("Tree", r"example", case="ignore")
+    kmp_folder = StringMatching("Tree", r"example", method="naive",
+                                case="ignore")
     print("Beispiel für case-insensitive Suche in einem Ordner:\n"
           "Tree im Ordner example:", kmp_folder.matcher())
+
+    n_str = StringMatching("curious", "Curious and curiouser", method="naive")
+    assert n_str.matcher() == "12"
+    n_str_i = StringMatching("curious", "Curious and curiouser",
+                             method="naive", case="ignore")
+    assert n_str_i.matcher() == "0, 12"
+    kmp_str = StringMatching("curious", "Curious and curiouser")
+    assert kmp_str.matcher() == "12"
+    kmp_str_i = StringMatching("curious", "Curious and curiouser",
+                               case="ignore")
+    assert kmp_str_i.matcher() == "0, 12"
+    kmp_file = StringMatching("Heart", "example\\shortstory.txt")
+    assert kmp_file.matcher() == "14"
+    kmp_folder = StringMatching("Heart", "example\\")
+    assert kmp_folder.matcher() == "[], [14]"
 
 
 if __name__ == "__main__":
