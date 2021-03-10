@@ -9,7 +9,7 @@ class StringMatching:
     """
     Find position of a string in another string
 
-    Attributes
+    Parameters
     ----------
     string: str
         String that user searches for
@@ -40,7 +40,8 @@ class StringMatching:
         elif self.method == "kmp":
             return self.__kmp_matcher()
 
-    def __read_files(self, text, case=""):
+    @staticmethod
+    def __read_files(text, case=""):
         """
         Determine type of variable text and turn into searchable list of string
 
@@ -75,6 +76,15 @@ class StringMatching:
         return texts
 
     def __naive(self):
+        """
+        Find position of search term in a larger string, using a naive search
+        algorithm
+
+        Returns
+        -------
+        string
+            Contains all starting positions of search term in text
+        """
         for t in self.text:
             found = []
             n = len(t)
@@ -91,7 +101,7 @@ class StringMatching:
     @staticmethod
     def __prefix(string):
         """
-        Compare string with itself
+        Auxiliary function for KMP-matcher, compare string with itself
 
         Returns
         -------
@@ -112,12 +122,12 @@ class StringMatching:
 
     def __kmp_matcher(self):
         """
-        Find position of search term in a larger string
+        Find position of search term in a larger string, using KMP-algorithm
 
         Returns
         -------
-        list
-            Contains all starting positions of search term in larger string.
+        string
+            Contains all starting positions of search term in text
         """
         for t in self.text:
             found = []
@@ -169,7 +179,7 @@ def main():
 
     kmp_file = StringMatching("tree", r"example\news.txt")
     print("Beispiel für default Suche in einer Datei:\n"
-          "tree in news.txt:", kmp_file.matcher())
+          "tree in example\\news.txt:", kmp_file.matcher())
 
     kmp_folder = StringMatching("Tree", r"example", case="ignore")
     print("Beispiel für case-insensitive Suche in einem Ordner:\n"
