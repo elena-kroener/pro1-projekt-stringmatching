@@ -5,7 +5,10 @@ String Matching is a simple program that finds the starting position of a string
 It uses the Knuth-Morris-Pratt-Algorithm (KMP).
 
 ## Requirements
-To run the program, you need to install `argparse`.
+1. Download the files `searchalgorithm.py` and `matcher.py`. 
+2. Install `argparse`.
+
+Written with Python 3.8
 
 ## Usage
 You can use the program with your command line.
