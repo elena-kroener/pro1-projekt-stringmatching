@@ -14,7 +14,7 @@ class StringMatching:
     string: str
         String that user searches for
     text: str
-        Text that string is searched in
+        Text, .txt-file or folder that string is searched in
     method: str, default="kmp"
         Determine search method, either "kmp" or "naive"
     case: str, optional
@@ -47,7 +47,7 @@ class StringMatching:
 
         Parameters
         ----------
-        t : string, .txt-file or foulder
+        t : string, .txt-file or folder
             Text that will be transformed based on its type.
         case : string, default=""
             set to case-insensitive if case="ignore"
@@ -105,6 +105,11 @@ class StringMatching:
     def __prefix(string):
         """
         Auxiliary function for KMP-matcher, compare string with itself
+
+        Parameters
+        ----------
+        string: str
+            String that is compared with itself
 
         Returns
         -------
