@@ -32,11 +32,6 @@ Output: 389, 1116, 1280, 1848, 3636, 4225, 4475
 ## Author
 Elena Kröner
 
-Matrikelnummer: 780552
-
-ekroener@uni-potsdam.de
-
-
 Wintersemester 2020/21
 
 Programmierung I
